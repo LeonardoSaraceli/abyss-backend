@@ -1,5 +1,5 @@
 import { Router } from 'express'
-import { isTokenValid } from '../middleware/auth.js'
+import { isTokenValid, upload } from '../middleware/auth.js'
 import {
   createPlaylist,
   deletePlaylistById,
@@ -12,8 +12,8 @@ const route = Router()
 
 route.get('/', getAllPlaylists)
 route.get('/:id', getPlaylistById)
-route.post('/', isTokenValid, createPlaylist)
-route.put('/:id', isTokenValid, updatePlaylistById)
+route.post('/', isTokenValid, upload.single('cover'), createPlaylist)
+route.put('/:id', isTokenValid, upload.single('cover'), updatePlaylistById)
 route.delete('/:id', isTokenValid, deletePlaylistById)
 
 export default route

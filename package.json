@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/LeonardoSaraceli/abyss-backend#readme",
   "dependencies": {
+    "@supabase/supabase-js": "^2.47.7",
     "bcrypt": "^5.1.1",
     "cors": "^2.8.5",
     "dotenv": "^16.4.7",
@@ -26,6 +27,7 @@
     "express-async-errors": "^3.1.1",
     "jsonwebtoken": "^9.0.2",
     "morgan": "^1.10.0",
+    "multer": "^1.4.5-lts.1",
     "pg": "^8.13.1"
   },
   "devDependencies": {
@@ -34,6 +36,7 @@
     "@types/express": "^5.0.0",
     "@types/jsonwebtoken": "^9.0.7",
     "@types/morgan": "^1.9.9",
+    "@types/multer": "^1.4.12",
     "@types/pg": "^8.11.10",
     "nodemon": "^3.1.9"
   }

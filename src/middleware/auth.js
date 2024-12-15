@@ -1,5 +1,6 @@
 import jwt from 'jsonwebtoken'
 import { InvalidTokenError } from '../errors/ApiError.js'
+import multer from 'multer'
 
 const isTokenValid = (req, res, next) => {
   try {
@@ -17,4 +18,6 @@ const isTokenValid = (req, res, next) => {
   }
 }
 
-export { isTokenValid }
+const upload = multer({ storage: multer.memoryStorage() })
+
+export { isTokenValid, upload }
