@@ -14,6 +14,7 @@ import {
   NotFoundError,
   UniqueFieldError,
 } from '../errors/ApiError.js'
+import { createClient } from '@supabase/supabase-js'
 
 const getAllUsers = async (req, res) => {
   const users = await getAllUsersDb()
@@ -93,8 +94,11 @@ const createToken = async (req, res) => {
   })
 }
 
+const supabase = createClient(process.env.SUPABASEURL, process.env.SUPABASEKEY)
+
 const updateUserById = async (req, res) => {
   const { name, email, picture } = req.body
+  const { id } = req.params
 
   if (!name && !email && !picture) {
     throw new MissingFieldsError('Missing field in request body')
@@ -108,15 +112,55 @@ const updateUserById = async (req, res) => {
     }
   }
 
-  const fieldsToUpdate = Object.fromEntries(
-    Object.entries({ name, email, picture }).filter(
-      ([_, value]) => value !== undefined && value !== null
-    )
-  )
+  const fieldsToUpdate = {}
 
-  await updateUserByIdDb(fieldsToUpdate, req.user.id)
+  if (name) {
+    fieldsToUpdate.name = name
+  }
 
-  const updatedUser = await getUserByIdDb(req.user.id)
+  if (picture && req.file) {
+    const file = req.file
+    const filePath = `${Date.now()}-${file.originalname}`
+
+    if (picture) {
+      const user = await getUserByIdDb(id)
+      if (user.rowCount && user.rows[0].picture) {
+        const { error: deleteError } = await supabase.storage
+          .from(process.env.BUCKETNAME)
+          .remove([user.rows[0].picture])
+
+        if (deleteError) {
+          throw new Error(
+            `Failed to delete old picture: ${deleteError.message}`
+          )
+        }
+      }
+    }
+
+    const { error: uploadError } = await supabase.storage
+      .from(process.env.BUCKETNAME)
+      .upload(filePath, file.buffer, {
+        contentType: file.mimetype,
+      })
+
+    if (uploadError) {
+      throw new Error(`Failed to upload new picture: ${uploadError.message}`)
+    }
+
+    const { data: signedData, error: signedError } = await supabase.storage
+      .from(process.env.BUCKETNAME)
+      .createSignedUrl(filePath, 60 * 60 * 24)
+
+    if (signedError) {
+      throw new Error(`Failed to generate signed URL: ${signedError.message}`)
+    }
+
+    fieldsToUpdate.picture = signedData.signedUrl
+  }
+
+  await updateUserByIdDb(fieldsToUpdate, id)
+
+  const updatedUser = await getUserByIdDb(id)
   delete updatedUser.rows[0].password
 
   return res.json({
