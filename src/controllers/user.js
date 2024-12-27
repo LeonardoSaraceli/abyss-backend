@@ -16,6 +16,18 @@ import {
 } from '../errors/ApiError.js'
 import { createClient } from '@supabase/supabase-js'
 
+const getUserInfo = async (req, res) => {
+  const user = await getUserByIdDb(req.user.id)
+
+  if (user.rowCount) {
+    delete user.rows[0].password
+
+    return res.json({
+      user: user.rows[0],
+    })
+  }
+}
+
 const getAllUsers = async (req, res) => {
   const users = await getAllUsersDb()
 
@@ -184,6 +196,7 @@ const deleteUserById = async (req, res) => {
 }
 
 export {
+  getUserInfo,
   getAllUsers,
   getUserById,
   createUser,

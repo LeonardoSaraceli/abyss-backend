@@ -3,7 +3,7 @@ import express, { json } from 'express'
 import 'express-async-errors'
 import cors from 'cors'
 import morgan from 'morgan'
-import ApiErrror from './errors/ApiError.js'
+import ApiError from './errors/ApiError.js'
 import userRoute from './routes/user.js'
 import libraryRoute from './routes/library.js'
 import musicRoute from './routes/music.js'
@@ -33,7 +33,7 @@ app.use('/librariesPlaylists', libraryPlaylistRoute)
 app.use('/playlistsMusics', playlistMusicRoute)
 
 app.use((error, req, res, next) => {
-  if (error instanceof ApiErrror) {
+  if (error instanceof ApiError) {
     return res.status(error.statusCode).json({
       error: error.message,
     })

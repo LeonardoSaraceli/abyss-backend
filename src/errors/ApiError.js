@@ -1,4 +1,4 @@
-class ApiErrror extends Error {
+class ApiError extends Error {
   constructor(statusCode, message) {
     super()
     this.statusCode = statusCode
@@ -6,31 +6,31 @@ class ApiErrror extends Error {
   }
 }
 
-class MissingFieldsError extends ApiErrror {
+class MissingFieldsError extends ApiError {
   constructor(message) {
     super(400, message)
   }
 }
 
-class UniqueFieldError extends ApiErrror {
+class UniqueFieldError extends ApiError {
   constructor(message) {
     super(409, message)
   }
 }
 
-class NotFoundError extends ApiErrror {
+class NotFoundError extends ApiError {
   constructor(message) {
     super(404, message)
   }
 }
 
-class InvalidTokenError extends ApiErrror {
+class InvalidTokenError extends ApiError {
   constructor(message) {
     super(401, message)
   }
 }
 
-export default ApiErrror
+export default ApiError
 export {
   MissingFieldsError,
   UniqueFieldError,

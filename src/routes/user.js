@@ -5,12 +5,14 @@ import {
   deleteUserById,
   getAllUsers,
   getUserById,
+  getUserInfo,
   updateUserById,
 } from '../controllers/user.js'
 import { isTokenValid, upload } from '../middleware/auth.js'
 
 const route = Router()
 
+route.get('/info', isTokenValid, getUserInfo)
 route.get('/', getAllUsers)
 route.get('/:id', getUserById)
 route.post('/register', createUser)
