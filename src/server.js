@@ -18,7 +18,22 @@ import playlistMusicRoute from './routes/playlistMusic.js'
 const app = express()
 
 app.use(morgan('dev'))
-app.use(cors())
+app.use(
+  cors({
+    origin: (origin, callback) => {
+      const allowedOrigin = process.env.FRONTENDURL?.replace(/\/$/, '')
+
+      if (!origin || origin === allowedOrigin) {
+        callback(null, true)
+      } else {
+        callback(new Error('Not allowed by CORS'))
+      }
+    },
+    methods: 'GET,POST,PUT,DELETE',
+    credentials: true,
+    preflightContinue: false,
+  })
+)
 app.use(json())
 
 app.use('/users', userRoute)
@@ -38,7 +53,7 @@ app.use((error, req, res, next) => {
       error: error.message,
     })
   }
-  
+
   res.status(500).json({
     error: error.message,
   })

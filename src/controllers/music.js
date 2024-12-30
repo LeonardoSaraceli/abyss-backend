@@ -74,10 +74,10 @@ const deleteMusicById = async (req, res) => {
 }
 
 const updateMusicById = async (req, res) => {
-  const { url, cover, title, albumId } = req.body
+  const { url, cover, title, position, albumId } = req.body
   const { id } = req.params
 
-  if (!url && !cover && !title && !albumId) {
+  if (!url && !cover && !title && !position && !albumId) {
     throw new MissingFieldsError('Missing fields in request body')
   }
 
@@ -94,7 +94,7 @@ const updateMusicById = async (req, res) => {
   }
 
   const fieldsToUpdate = Object.fromEntries(
-    Object.entries({ url, cover, title, albumId }).filter(
+    Object.entries({ url, cover, title, position, albumId }).filter(
       ([_, value]) => value !== undefined && value !== null
     )
   )

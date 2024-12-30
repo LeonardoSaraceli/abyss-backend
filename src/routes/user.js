@@ -8,7 +8,7 @@ import {
   getUserInfo,
   updateUserById,
 } from '../controllers/user.js'
-import { isTokenValid, upload } from '../middleware/auth.js'
+import { isTokenValid } from '../middleware/auth.js'
 
 const route = Router()
 
@@ -17,7 +17,7 @@ route.get('/', getAllUsers)
 route.get('/:id', getUserById)
 route.post('/register', createUser)
 route.post('/login', createToken)
-route.put('/', isTokenValid, upload.single('picture'), updateUserById)
+route.put('/', isTokenValid, updateUserById)
 route.delete('/', isTokenValid, deleteUserById)
 
 export default route

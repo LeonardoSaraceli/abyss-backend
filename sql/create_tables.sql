@@ -31,6 +31,7 @@ CREATE TABLE IF NOT EXISTS musics (
     url         TEXT NOT NULL,
     cover       TEXT NOT NULL,
     title       TEXT NOT NULL,
+    position    INTEGER,
     createdAt   TIMESTAMP DEFAULT NOW(),
     updatedAt   TIMESTAMP DEFAULT NOW(),
     albumId     INTEGER,

@@ -56,6 +56,8 @@ const getAllAlbumMusicsByIdDb = async (albumId) => {
         musics m
     WHERE 
         m.albumId = $1
+    ORDER BY
+        m.position ASC
   `,
     [albumId]
   )
