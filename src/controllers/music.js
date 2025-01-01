@@ -83,11 +83,15 @@ const deleteMusicById = async (req, res) => {
 }
 
 const updateMusicById = async (req, res) => {
-  const { url, cover, title, position, albumId } = req.body
+  const { url, cover, title, position, albumId, users } = req.body
   const { id } = req.params
 
-  if (!url && !cover && !title && !position && !albumId) {
+  if (!url && !cover && !title && !position && !albumId && !users) {
     throw new MissingFieldsError('Missing fields in request body')
+  }
+
+  if (users) {
+    await addUsersToMusicDb(users, id)
   }
 
   const album = await getAlbumByIdDb(albumId)
