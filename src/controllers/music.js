@@ -23,7 +23,7 @@ const getAllSingles = async (req, res) => {
 const createMusic = async (req, res) => {
   const { url, cover, title, users } = req.body
 
-  if (!url || !cover || !title || !users) {
+  if (!url || !title || !users) {
     throw new MissingFieldsError('Missing fields in request body')
   }
 

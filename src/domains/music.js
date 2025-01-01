@@ -9,7 +9,7 @@ const getAllSinglesDb = async () => {
 const createMusicDb = async (url, cover, title) => {
   return await db.query(
     'INSERT INTO musics (url, cover, title) VALUES ($1, $2, $3)',
-    [url, cover, title]
+    [url, cover || null, title]
   )
 }
 
