@@ -1,5 +1,11 @@
 import { db } from '../lib/db.js'
 
+const getAllSinglesDb = async () => {
+  return await db.query(
+    'SELECT * FROM musics WHERE albumId IS NULL ORDER BY createdAt DESC'
+  )
+}
+
 const createMusicDb = async (url, cover, title) => {
   return await db.query(
     'INSERT INTO musics (url, cover, title) VALUES ($1, $2, $3)',
@@ -43,6 +49,7 @@ const updateMusicDb = async (fieldsToUpdate, musicId) => {
 }
 
 export {
+  getAllSinglesDb,
   createMusicDb,
   getLatestMusicDb,
   getAllMusicsDb,

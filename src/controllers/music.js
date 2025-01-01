@@ -3,6 +3,7 @@ import {
   createMusicDb,
   deleteMusicByIdDb,
   getAllMusicsDb,
+  getAllSinglesDb,
   getLatestMusicDb,
   getMusicByIdDb,
   updateMusicDb,
@@ -10,6 +11,14 @@ import {
 import { getUserByIdDb } from '../domains/user.js'
 import { addUsersToMusicDb } from '../domains/userMusic.js'
 import { MissingFieldsError, NotFoundError } from '../errors/ApiError.js'
+
+const getAllSingles = async (req, res) => {
+  const musics = await getAllSinglesDb()
+
+  return res.json({
+    musics: musics.rows,
+  })
+}
 
 const createMusic = async (req, res) => {
   const { url, cover, title, users } = req.body
@@ -83,7 +92,7 @@ const updateMusicById = async (req, res) => {
 
   const album = await getAlbumByIdDb(albumId)
 
-  if (!album.rowCount) {
+  if (albumId && !album.rowCount) {
     throw new NotFoundError('Album not found')
   }
 
@@ -108,6 +117,7 @@ const updateMusicById = async (req, res) => {
 }
 
 export {
+  getAllSingles,
   createMusic,
   getAllMusics,
   getMusicById,

@@ -3,6 +3,7 @@ import {
   createMusic,
   deleteMusicById,
   getAllMusics,
+  getAllSingles,
   getMusicById,
   updateMusicById,
 } from '../controllers/music.js'
@@ -10,6 +11,7 @@ import {
 const route = Router()
 
 route.get('/', getAllMusics)
+route.get('/singles', getAllSingles)
 route.get('/:id', getMusicById)
 route.post('/', createMusic)
 route.put('/:id', updateMusicById)
