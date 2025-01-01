@@ -29,7 +29,7 @@ CREATE TABLE IF NOT EXISTS albums (
 CREATE TABLE IF NOT EXISTS musics (
     id          SERIAL PRIMARY KEY,
     url         TEXT NOT NULL,
-    cover       TEXT NOT NULL,
+    cover       TEXT,
     title       TEXT NOT NULL,
     position    INTEGER,
     createdAt   TIMESTAMP DEFAULT NOW(),
